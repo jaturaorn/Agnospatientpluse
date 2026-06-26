@@ -6,7 +6,7 @@ import { usePatientSync } from "../hooks/usePatientSync";
 
 export default function Page() {
   const patientFormContext = usePatientForm()!;
-  const statusSync = usePatientSync(patientFormContext)
+  const statusSync = usePatientSync(patientFormContext, patientId)
 
   
   return <div className=" w-full min-h-[100vh] flex flex-col items-center ">
