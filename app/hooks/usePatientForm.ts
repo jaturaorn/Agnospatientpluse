@@ -21,7 +21,7 @@ export const patientFormSchema = z.object({
 
 export type PatientFormValues = z.infer<typeof patientFormSchema>;
 
-const initialFormData: PatientFormValues = {
+export const initialFormData: PatientFormValues = {
   firstName: "",
   middleName: "",
   lastName: "",

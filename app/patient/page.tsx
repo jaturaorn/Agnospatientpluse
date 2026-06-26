@@ -2,9 +2,11 @@
 
 import PersonalInfoSection from "../components/forms/PersonalInfoSection";
 import { usePatientForm } from "../hooks/usePatientForm";
+import { usePatientSync } from "../hooks/usePatientSync";
 
 export default function Page() {
   const patientFormContext = usePatientForm()!;
+  const statusSync = usePatientSync(patientFormContext)
 
   
   return <div className=" w-full min-h-[100vh] flex flex-col items-center ">
