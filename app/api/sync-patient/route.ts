@@ -23,6 +23,7 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ success: true }, { status: 200 })
     } catch (error) {
+        console.error("API Error in sync-patient:", error);
         return NextResponse.json({ success: false, error: "Sync failed" }, { status: 500 });
     }
 

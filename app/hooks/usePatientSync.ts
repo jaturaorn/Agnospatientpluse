@@ -15,12 +15,14 @@ export const usePatientSync = ({ form, patientId }: UsePatientSyncProps) => {
 
   // 1. Monitor all formdata in realtime
   const currentFormData = form.watch();
+  const serializedFormData = JSON.stringify(currentFormData);
 
-  // 2. ทำ Debounce ข้อมูลฟอร์ม (ลดภาระ Network ส่งข้อมูลทุกๆ 400ms หลังหยุดพิมพ์)
-  const debounceFormData = useDebounce(currentFormData, 400);
+  // 2. ทำ Debounce ข้อมูลฟอร์ม โดยแปลงเป็น string เพื่อให้เทียบความแตกต่างได้ถูกต้อง (ลดภาระ Network ส่งข้อมูลทุกๆ 400ms หลังหยุดพิมพ์)
+  const debouncedSerializedFormData = useDebounce(serializedFormData, 400);
 
   const inacvtiveTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const isFirstRender = useRef(true);
+  const isFirstRenderActive = useRef(true);
+  const isFirstRenderDebounce = useRef(true);
 
   // Function to send data to the API to trigger a Pusher Channel
   const triggerSyncAPI = async (
@@ -42,34 +44,46 @@ export const usePatientSync = ({ form, patientId }: UsePatientSyncProps) => {
     }
   };
 
-  // // 3. จับจังหวะการพิมพ์เพื่อเปลี่ยนสถานะเป็น "active" ทันที (ไม่ต้องรอ Debounce)
-  // useEffect(() => {
-  //   if (isFirstRender.current) {
-  //     isFirstRender.current = false;
-  //     return;
-  //   }
+  // 3. จับจังหวะการพิมพ์เพื่อเปลี่ยนสถานะเป็น "active" ทันที (ไม่ต้องรอ Debounce)
+  useEffect(() => {
+    if (isFirstRenderActive.current) {
+      isFirstRenderActive.current = false;
+      return;
+    }
 
-  //   setStatus("active")
-  //   triggerSyncAPI("active", form.getValues());
+    if (status === "submitted") return;
 
-  //   if(inacvtiveTimerRef.current) clearTimeout(inacvtiveTimerRef.current);
+    setStatus("active");
+    triggerSyncAPI("active", form.getValues());
 
-  //   // 4. ถ้าหยุดพิมพ์ครบ 3 วินาที (3000ms) ให้ปรับสถานะเป็น "inactive"
-  //   inacvtiveTimerRef.current = setTimeout(()=> {
-  //       setStatus("inactive")
-  //       triggerSyncAPI("inactive", form.getValues())
-  //   }, 3000)
+    if (inacvtiveTimerRef.current) clearTimeout(inacvtiveTimerRef.current);
 
-  //   return () => {
-  //       if(inacvtiveTimerRef.current) clearTimeout(inacvtiveTimerRef.current)
-  //   }
-  // }, [currentFormData]);
+    // 4. ถ้าหยุดพิมพ์ครบ 3 วินาที (3000ms) ให้ปรับสถานะเป็น "inactive"
+    inacvtiveTimerRef.current = setTimeout(() => {
+      setStatus("inactive");
+      triggerSyncAPI("inactive", form.getValues());
+    }, 3000);
 
-  // // 5. ส่งข้อมูลชุดใหญ่ (FormData) ไปอัปเดตเมื่อ Debounce ทำงานเสร็จสิ้น
-  // useEffect(()=>{
-  //   if(isFirstRender.current) return
-  //   triggerSyncAPI(status, debounceFormData)
-  // },[debounceFormData])
+    return () => {
+      if (inacvtiveTimerRef.current) {
+        clearTimeout(inacvtiveTimerRef.current);
+      }
+    };
+  }, [serializedFormData]);
 
-  return {status};
+  // 5. ส่งข้อมูลชุดใหญ่ (FormData) ไปอัปเดตเมื่อ Debounce ทำงานเสร็จสิ้น
+  useEffect(() => {
+    if (isFirstRenderDebounce.current) {
+      isFirstRenderDebounce.current = false;
+      return;
+    }
+
+    if (status === "submitted") return;
+
+    // ยิงข้อมูลชุดใหญ่ขึ้นระบบเฉพาะตอนที่ผ่าน Debounce 400ms มาแล้วเท่านั้น
+    const parsedData = JSON.parse(debouncedSerializedFormData);
+    triggerSyncAPI(status, parsedData);
+  }, [debouncedSerializedFormData]);
+
+  return { status, setStatus };
 };
