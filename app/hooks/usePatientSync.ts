@@ -42,34 +42,34 @@ export const usePatientSync = ({ form, patientId }: UsePatientSyncProps) => {
     }
   };
 
-  // 3. จับจังหวะการพิมพ์เพื่อเปลี่ยนสถานะเป็น "active" ทันที (ไม่ต้องรอ Debounce)
-  useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-      return;
-    }
+  // // 3. จับจังหวะการพิมพ์เพื่อเปลี่ยนสถานะเป็น "active" ทันที (ไม่ต้องรอ Debounce)
+  // useEffect(() => {
+  //   if (isFirstRender.current) {
+  //     isFirstRender.current = false;
+  //     return;
+  //   }
 
-    setStatus("active")
-    triggerSyncAPI("active", form.getValues());
+  //   setStatus("active")
+  //   triggerSyncAPI("active", form.getValues());
 
-    if(inacvtiveTimerRef.current) clearTimeout(inacvtiveTimerRef.current);
+  //   if(inacvtiveTimerRef.current) clearTimeout(inacvtiveTimerRef.current);
 
-    // 4. ถ้าหยุดพิมพ์ครบ 3 วินาที (3000ms) ให้ปรับสถานะเป็น "inactive"
-    inacvtiveTimerRef.current = setTimeout(()=> {
-        setStatus("inactive")
-        triggerSyncAPI("inactive", form.getValues())
-    }, 3000)
+  //   // 4. ถ้าหยุดพิมพ์ครบ 3 วินาที (3000ms) ให้ปรับสถานะเป็น "inactive"
+  //   inacvtiveTimerRef.current = setTimeout(()=> {
+  //       setStatus("inactive")
+  //       triggerSyncAPI("inactive", form.getValues())
+  //   }, 3000)
 
-    return () => {
-        if(inacvtiveTimerRef.current) clearTimeout(inacvtiveTimerRef.current)
-    }
-  }, [currentFormData]);
+  //   return () => {
+  //       if(inacvtiveTimerRef.current) clearTimeout(inacvtiveTimerRef.current)
+  //   }
+  // }, [currentFormData]);
 
-  // 5. ส่งข้อมูลชุดใหญ่ (FormData) ไปอัปเดตเมื่อ Debounce ทำงานเสร็จสิ้น
-  useEffect(()=>{
-    if(isFirstRender.current) return
-    triggerSyncAPI(status, debounceFormData)
-  },[debounceFormData])
+  // // 5. ส่งข้อมูลชุดใหญ่ (FormData) ไปอัปเดตเมื่อ Debounce ทำงานเสร็จสิ้น
+  // useEffect(()=>{
+  //   if(isFirstRender.current) return
+  //   triggerSyncAPI(status, debounceFormData)
+  // },[debounceFormData])
 
   return {status};
 };

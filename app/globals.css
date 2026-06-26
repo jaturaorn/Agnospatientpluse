@@ -8,8 +8,8 @@
 
 @layer base {
   .input_Default_Style {
-    @apply py-[10px] px-5 rounded-full bg-[#F8FAFC] outline-none placeholder:text-[#64686C] 
-    w-full text-sm placeholder:text-sm;
+    @apply py-2.5 px-5 rounded-lg bg-[#F8FAFC] outline-none placeholder:text-[#64686C] 
+    w-full text-sm placeholder:text-sm border-2 border-[#E1E7F1];
   }
 
   .textbox_state {
