@@ -182,7 +182,7 @@ export default function Page() {
 
           if (existingIndex > -1) {
             const existing = prevPatients[existingIndex];
-            
+
             // Detect which field was modified to trigger active typing indicator
             let changedField = existing.lastActiveField;
             if (formData && existing.formData) {
@@ -299,7 +299,7 @@ export default function Page() {
   const renderField = (label: string, rawValue: string | undefined, fieldKey: string) => {
     if (!selectedPatient) return null;
     const isTyping = selectedPatient.status === "active" && selectedPatient.lastActiveField === fieldKey;
-    
+
     let displayValue = rawValue || "—";
     if (isTyping && !rawValue) {
       displayValue = "Typing...";
@@ -362,9 +362,8 @@ export default function Page() {
 
       {/* 1. Left Sidebar (Collapsible drawer on mobile, static on desktop) */}
       <aside
-        className={`fixed md:static inset-y-0 left-0 w-64 border-r border-[#1E293B]/60 bg-[#111622] flex flex-col justify-between py-6 px-4 shrink-0 z-50 transition-transform duration-300 ease-in-out md:translate-x-0 ${
-          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed md:static inset-y-0 left-0 w-64 border-r border-[#1E293B]/60 bg-[#111622] flex flex-col justify-between py-6 px-4 shrink-0 z-50 transition-transform duration-300 ease-in-out md:translate-x-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
       >
         <div>
           {/* Top Brand with Close Button on Mobile */}
@@ -392,11 +391,10 @@ export default function Page() {
                     setActiveMenu(item.name);
                     setIsSidebarOpen(false);
                   }}
-                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs font-semibold transition-all duration-200 group cursor-pointer ${
-                    isActive
-                      ? "bg-[#1E293B] text-white"
-                      : "text-[#64748B] hover:text-[#94A3B8] hover:bg-[#1E293B]/30"
-                  }`}
+                  className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-left text-xs font-semibold transition-all duration-200 group cursor-pointer ${isActive
+                    ? "bg-[#1E293B] text-white"
+                    : "text-[#64748B] hover:text-[#94A3B8] hover:bg-[#1E293B]/30"
+                    }`}
                 >
                   <div className="flex items-center gap-2.5">
                     <span className="text-sm">{item.icon}</span>
@@ -430,7 +428,7 @@ export default function Page() {
               <h2 className="text-base md:text-lg font-bold tracking-wide text-white">Live Patient Dashboard</h2>
               <p className="text-[10px] text-[#64748B] mt-0.5">Monitor client patient-registration form inputs in real-time</p>
             </div>
-            
+
             {/* Live Indicator */}
             <div className="flex items-center justify-between sm:justify-start gap-3 bg-[#0F172A] border border-[#1E293B]/40 px-3.5 py-1.5 rounded-xl shadow-inner">
               <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-[#10B981]">
@@ -464,15 +462,14 @@ export default function Page() {
         </div>
 
         {/* 3. Main Live Data Container */}
-        <div className="flex-1 flex min-h-0 bg-[#0B0F19] overflow-hidden relative">
+        <div className="flex-1 flex flex-col lg:flex-row min-h-0 bg-[#0B0F19] overflow-hidden relative">
           {/* Left: Active Patients list */}
-          <section className={`w-full md:w-80 border-r border-[#1E293B]/60 p-4 overflow-y-auto flex flex-col shrink-0 ${
-            showMobileDetail ? "hidden md:flex" : "flex"
-          }`}>
+          <section className={`w-full lg:w-80 md:w-full border-r border-[#1E293B]/60 p-4 overflow-y-auto flex flex-col shrink-0 ${showMobileDetail ? "hidden md:flex" : "flex"
+            }`}>
             <h3 className="text-[10px] font-extrabold tracking-wider text-[#64748B] uppercase mb-4 px-1">
               Active Patients
             </h3>
-            
+
             <div className="flex flex-col gap-2">
               {patients.map((p) => {
                 const isSelected = selectedPatientId === p.patientId;
@@ -504,11 +501,10 @@ export default function Page() {
                       setSelectedPatientId(p.patientId);
                       setShowMobileDetail(true);
                     }}
-                    className={`w-full text-left relative overflow-hidden bg-[#161D2B] border rounded-xl p-4 hover:bg-[#1E283A]/30 transition-all duration-200 flex flex-col justify-between cursor-pointer ${
-                      isSelected
-                        ? "border-[#3B82F6] ring-1 ring-[#3B82F6]/50 shadow-md"
-                        : "border-slate-800/80"
-                    }`}
+                    className={`w-full text-left relative overflow-hidden bg-[#161D2B] border rounded-xl p-4 hover:bg-[#1E283A]/30 transition-all duration-200 flex flex-col justify-between cursor-pointer ${isSelected
+                      ? "border-[#3B82F6] ring-1 ring-[#3B82F6]/50 shadow-md"
+                      : "border-slate-800/80"
+                      }`}
                   >
                     <div className="flex justify-between items-start mb-2 gap-2">
                       <span className="text-xs font-bold text-white tracking-wide truncate">
@@ -532,9 +528,8 @@ export default function Page() {
           </section>
 
           {/* Right: Selected Patient Details view */}
-          <section className={`flex-1 p-4 md:p-6 overflow-y-auto ${
-            showMobileDetail ? "flex flex-col" : "hidden md:flex md:flex-col"
-          }`}>
+          <section className={`flex-1 p-4 md:p-6 overflow-y-auto ${showMobileDetail ? "flex flex-col" : "hidden md:flex md:flex-col"
+            }`}>
             {/* Back Button on Mobile */}
             {showMobileDetail && (
               <button
