@@ -5,22 +5,16 @@
   --foreground: #171717;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  .input_Default_Style {
+    @apply py-[10px] px-5 rounded-full bg-[#F8FAFC] outline-none placeholder:text-[#64686C] 
+    w-full text-sm placeholder:text-sm;
+  }
+
+  .textbox_state {
+    @apply active:ring-2 active:ring-[#3B82F6] 
+    focus-within:ring-2 focus-within:ring-[#3B82F6];
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
