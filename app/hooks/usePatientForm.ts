@@ -16,6 +16,8 @@ export const patientFormSchema = z.object({
   language: z.string().min(1, "Language is required"),
   nationality: z.string().min(1, "Nationality is required"),
   emergencyContact: z.string().optional(),
+  emergencyRelationship: z.string().optional(),
+  emergencyPhone: z.string().optional(),
   religion: z.string().optional(),
 });
 
@@ -33,6 +35,8 @@ export const initialFormData: PatientFormValues = {
   language: "",
   nationality: "",
   emergencyContact: "",
+  emergencyRelationship: "",
+  emergencyPhone: "",
   religion: "",
 };
 
