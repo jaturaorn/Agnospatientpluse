@@ -32,9 +32,15 @@ const ContactInfoSection = ({ form }: ContactInfoSectionProps) => {
               phoneError ? "ring ring-identity4-rose" : ""
             } text-sm`}
           />
-          <span className="text-xs text-[#64686C] mt-1 block">
-            Include country code
-          </span>
+          {phoneError ? (
+            <span className="text-xs text-identity4-rose mt-1 block">
+              {errors?.phone?.message as string}
+            </span>
+          ) : (
+            <span className="text-xs text-[#64686C] mt-1 block">
+              Include country code
+            </span>
+          )}
         </div>
 
         <div className="w-full">

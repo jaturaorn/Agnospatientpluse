@@ -39,6 +39,7 @@ const PersonalInfoSection = ({ form }: any) => {
   const nationalityError = !!errors?.nationality;
   const languageError = !!errors?.language;
   const religionError = !!errors?.religion;
+  const dateOfBirthError = errors?.dateOfBirth;
 
   return (
     <>
@@ -91,13 +92,18 @@ const PersonalInfoSection = ({ form }: any) => {
         </div>
 
         <div className="flex-1">
-          <h6 className={`text-sm `}>Date of Birth*</h6>
+          <h6 className={`text-sm ${dateOfBirthError ? "text-identity4-rose" : ""}`}>Date of Birth*</h6>
           <input
             {...register("dateOfBirth")}
             type="text"
             placeholder="DD / MM / YYYY"
-            className={`input_Default_Style textbox_state `}
+            className={`input_Default_Style textbox_state ${dateOfBirthError ? "ring ring-identity4-rose" : ""} text-sm`}
           />
+          {dateOfBirthError && (
+            <p className="text-identity4-rose text-xs mt-1">
+              {dateOfBirthError.message as string}
+            </p>
+          )}
         </div>
       </div>
 
