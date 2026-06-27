@@ -23,6 +23,7 @@ export const usePatientSync = ({ form, patientId }: UsePatientSyncProps) => {
   const inacvtiveTimerRef = useRef<NodeJS.Timeout | null>(null);
   const isFirstRenderActive = useRef(true);
   const isFirstRenderDebounce = useRef(true);
+  const isActiveRef = useRef(false);
 
   // Function to send data to the API to trigger a Pusher Channel
   const triggerSyncAPI = async (
@@ -53,13 +54,17 @@ export const usePatientSync = ({ form, patientId }: UsePatientSyncProps) => {
 
     if (status === "submitted") return;
 
-    setStatus("active");
-    triggerSyncAPI("active", form.getValues());
+    if (!isActiveRef.current) {
+      isActiveRef.current = true;
+      setStatus("active");
+      triggerSyncAPI("active", form.getValues());
+    }
 
     if (inacvtiveTimerRef.current) clearTimeout(inacvtiveTimerRef.current);
 
     // 4. ถ้าหยุดพิมพ์ครบ 3 วินาที (3000ms) ให้ปรับสถานะเป็น "inactive"
     inacvtiveTimerRef.current = setTimeout(() => {
+      isActiveRef.current = false;
       setStatus("inactive");
       triggerSyncAPI("inactive", form.getValues());
     }, 3000);

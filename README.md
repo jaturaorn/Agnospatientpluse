@@ -76,6 +76,7 @@ To achieve letter-by-letter live tracking without performance degradation or inf
   ```
   Since JavaScript compares strings by value rather than reference, this prevents the debounce timer from resetting when the data is identical.
 - **Double Render Guards**: We split the mounting guards into two separate refs (`isFirstRenderActive` and `isFirstRenderDebounce`) to guarantee no initial sync payloads are sent to `/api/sync-patient` when the page mounts.
+- **Throttle / State Guard Mechanism**: To prevent the `"active"` status payload from firing repeatedly on every single keystroke, we implemented a state guard (`isActiveRef`). This ensures the API call is triggered exactly once when transitioning from an `"inactive"` state.
 - **Active & Inactive State Transitions**: When the user presses a key, the status is immediately set to `"active"` ("Syncing Live" badge appears). A final `"inactive"` payload is dispatched 3 seconds after the user stops typing, reverting the status back to `"inactive"` ("Synced" badge).
 
 ---
